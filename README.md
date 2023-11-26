@@ -5,3 +5,4 @@ The writeups are contained in the markdown files and the other files serve as to
 - [SheHacks Intervarsity CTF](/SIC(AspireCTF))
 - [HuntressCTF](/HuntressCTF)
 - [BSidesCTF](/BSidesCTF)
+- [GlacierCTF](/GlacierCTF)
