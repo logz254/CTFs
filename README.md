@@ -6,3 +6,4 @@ The writeups are contained in the markdown files and the other files serve as to
 - [HuntressCTF](/HuntressCTF)
 - [BSidesCTF](/BSidesCTF)
 - [GlacierCTF](/GlacierCTF)
+- [AoC 2023 Side Quest: The Return of the Yeti](/TheReturnoftheYeti)
