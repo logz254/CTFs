@@ -81,7 +81,7 @@ Ensure you add the key to the pcap file as shown.
 ![Alt text](add_private_key.png)
 
 
-# Note: I was able to reach this point of the challenge during the time allocated. Beyond here, its more of research from released writeups
+# Note: I was able to reach this point of the challenge during the time allocated. Beyond here, it's more of research from released writeups
 
 Digging around, I released the key for the last two challenges was right infront of me but making sense of the RDP packets was the issue.
 ![Alt text](gibberish.png)
