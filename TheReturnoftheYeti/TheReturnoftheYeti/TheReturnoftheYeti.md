@@ -34,12 +34,71 @@ Here is a breakdown of the cases, I chose rockyou are the wordlist since it is c
 
 I tried running it the command using the original file i.e., aircrack-ng -w /usr/share/wordlists/rockyou.txt -b 22:c7:12:c7:e2:35 VanSpy.pcapng, but aircrack-ng doesn't support this file type.
 
-By running the command, we get the passowrd to access the WiFi network
+By running the command, we get the password to access the WiFi network
 ![Alt text](solv_2.png)
 
 
+## What suspicious tool is used by the attacker to extract a juicy file from the server?
+
+Use the password as shown below to decrypt the packets
+![Alt text](decryption_keys.png)
+
+You should be able to see the packets with different protocols.
+
+Inspecting random TCP packets didn't yield much fruit until I decided to filter the packets by Length in descending order.
+![Alt text](descending_packets.png)
+
+Following the TCP stream of the first packet, we get some juicy information. I've picked the below image since it captures the main part of what the malicious actor achieved.
+![Alt text](juicy_info.png)
+
+So the actor was able to gain access to the Windows machine and to their advantage, the account was an administrator account i.e., whoami command. He/she downloaded a common credentials harvesting tool called Mimikatz from its github repository and output the files as mimi.zip. The actor extracted the contents into the current directory i.e., C:\Users\Administrator
+
+The actor then ran mimikatz to export the Remote Desktop Certificate and finally to encode the contents of the exported certificate to base64 as shown below.
+![Alt text](juicy_info2.png)
 
 
+![Alt text](solv_3.png)
+
+Note: I was able to reach this point of the challenge during the time allocated. Beyond here, its more of research.
+
+## What is the case number assigned by the CyberPolice to the issues reported by McSkidy?
+
+Decoding the certificate using CyberChef and saving it as .pfx, we get the certificate.
+Digging around, I came across this site: https://www.ibm.com/docs/en/arl/9.7?topic=certification-extracting-certificate-keys-from-pfx-file which helped to extract the decoded key.
+
+So first, you extract the private key
+![Alt text](encrypted_key.png)
+
+By default, when running mimikatz to export the certificate, the password used is mimikatz. So use that password when prompted for "Enter Import Password:", "Enter PEM pass phrase:" and "Verifying - Enter PEM pass phrase:"
+
+Then decrypt the private key
+![Alt text](decrypting_private_key.png)
+
+Once again, when prompted for the pass phrase, key in mimikatz.
+![Alt text](decrypted_private_key.png)
+
+Ensure you add the key to the pcap file as shown.
+![Alt text](add_private_key.png)
 
 
+# Note: I was able to reach this point of the challenge during the time allocated. Beyond here, its more of research from released writeups
+
+Digging around, I released the key for the last two challenges was right infront of me but making sense of the RDP packets was the issue.
+![Alt text](gibberish.png)
+
+To get a better understanding of what went on, we can "replay" the RDP session using this tool:https://github.com/GoSecure/pyrdp. Follow the provided instructions on how to install it on your VM.
+
+To use it, first we convert the pcap file to pyrdp file. To avoid the many errors, just rename VanSpy2.cap to rdp.pcap
+![Alt text](pyrdp_convert.png)
+
+Then run pyrdp-player ./20231125145052_10.0.0.2:55510-10.1.1.1:3389.pyrdp where ./20231125145052_10.0.0.2:55510-10.1.1.1:3389.pyrdp is the resulting regenerated file. Now you can kick back, relax and enjoy the show.
+
+![Alt text](solv_4.png)
+
+
+## What is the content of the yetikey1.txt file?
+
+![Alt text](solv_5.png)
+
+That's all for now. Cheers
 
